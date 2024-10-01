@@ -38,10 +38,10 @@ void cadastro(struct livro livros[], int* count)
     {
         cout << "Quantidade Maxima permitida são 10 unidades. Tente de novo." << endl << "Quantidades disponiveis: " << endl;
         cin >> livros[*count].qtdexemplares;
-
     }
     (*count)++;
 }
+
 void consultatotal(struct livro livros[], int count)
 {
     cout << "ID: " << livros[count].ID << endl;
@@ -83,7 +83,6 @@ void consultaIDouTitulo(struct livro livros[], int sz)
         }
         break;
     }
-
     case 2:
     {
         cout << "Digite o titulo que deseja pesquisar: " << endl;
@@ -108,7 +107,6 @@ void consultaIDouTitulo(struct livro livros[], int sz)
     default:
         cout << "Opção inválida." << endl;
     }
-
 }
 void menuconsultar(struct livro livros[], int count)
 {
@@ -128,7 +126,6 @@ void menuconsultar(struct livro livros[], int count)
         }
         break;
     }
-
     case 2:
     {
         consultaIDouTitulo(livros, count);

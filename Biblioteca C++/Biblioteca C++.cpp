@@ -139,7 +139,7 @@ void menuconsultar(struct livro livros[], int count)
     }
 }
 
-void emprestimo(struct livro livros[], struct cliente clientes[], int count, int* ncliente) {
+void emprestimo(struct livro livros[], struct cliente clientes[], int count, int *ncliente) {
     int id;
     cout << string(40, '-') << endl;
     cout << "Bem vindo(a) ao menu de empréstimos de livros" << endl;
@@ -162,6 +162,14 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
                 cin >> clientes[*ncliente].nome;
                 cout << "Digite o ID do cliente: ";
                 cin >> clientes[*ncliente].ID;
+
+                for (int aux = 0; aux < k; aux++) {
+                    if (livros[i].listaclientes[aux] == clientes[*ncliente].ID) {
+                        cout << "Esse livro já está emprestado para esse cliente." << endl;
+                        return;
+                    }
+                }
+
                 livros[i].listaclientes[k] = clientes[*ncliente].ID;
 
                 (*ncliente)++;
@@ -170,6 +178,52 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
                 cout << "O livro foi emprestado com sucesso!" << endl;
                 cout << "Ainda existe(m) " << livros[i].qtdexemplares << " exemplares desse livro em estoque." << endl;
             }
+        }
+    }
+}
+
+void devolucao(struct livro livros[], struct cliente clientes[], int count) {
+    int id;
+    cout << string(40, '-') << endl;
+    cout << "Bem vindo(a) ao menu de devolução de livros" << endl;
+    cout << "Digite o ID do livro que o cliente deseja devolver: ";
+    cin >> id;
+
+    for (int i = 0; i < count; i++) {
+        if (livros[i].ID == id) {
+            int k = 0;
+            for (int aux = 0; aux < 10; aux++) {
+                if (livros[i].listaclientes[aux] != 0) {
+                    k++;
+                }
+            }
+
+            int idcliente;
+            cout << "Digite o ID do cliente: ";
+            cin >> idcliente;
+
+            bool veri = false;
+            for (int aux = 0; aux < k; aux++) {
+                if (livros[i].listaclientes[aux] == idcliente) {
+                    veri = true;
+                }
+            }
+            if (veri == false) {
+                cout << "O cliente com o ID " << idcliente << " não emprestou esse livro." << endl;
+                return;
+            }
+
+            for (int aux = 0; aux < k; aux++) {
+                if (livros[i].listaclientes[aux] == idcliente) {
+                    for (int aux2 = k - aux - 1; aux2 <= k; aux2++){
+                        livros[i].listaclientes[aux2 - 1] = livros[i].listaclientes[aux2];
+                    }
+                }
+            }
+
+            livros[i].qtdexemplares++;
+            cout << "O livro foi devolvido com sucesso!" << endl;
+            cout << "Agora existem " << livros[i].qtdexemplares << " exemplares desse livro em estoque." << endl;
         }
     }
 }
@@ -190,7 +244,8 @@ int main()
         cout << "1 - Cadastrar um livro." << endl;
         cout << "2 - Consultar livros." << endl;
         cout << "3 - Emprestar um livro." << endl;
-        cout << "4 - Sair." << endl;
+        cout << "4 - Devolver um livro." << endl;
+        cout << "5 - Sair." << endl;
         cout << "Digite a opção desejada: ";
         cin >> opcao;
         cin.ignore(); // Ignorar o newline após a escolha da opção
@@ -207,12 +262,15 @@ int main()
             emprestimo(livros, clientes, count, &ncliente);
             break;
         case 4:
+            devolucao(livros, clientes, count);
+            break;
+        case 5:
             cout << "Saindo do programa..." << endl;
             break;
         default:
             cout << "Opção inválida. Tente novamente." << endl;
         }
-    } while (opcao != 4);
+    } while (opcao != 5);
 
     return 0;
 }

@@ -220,8 +220,8 @@ void devolucao(struct livro livros[], struct cliente clientes[], int count) {
 
             for (int aux = 0; aux < k; aux++) {
                 if (livros[i].listaclientes[aux] == idcliente) {
-                    for (int aux2 = k - aux - 1; aux2 <= k; aux2++){
-                        livros[i].listaclientes[aux2 - 1] = livros[i].listaclientes[aux2];
+                    for (int aux2 = aux; aux2 < k; aux2++){
+                        livros[i].listaclientes[aux2] = livros[i].listaclientes[aux2 + 1];
                     }
                 }
             }

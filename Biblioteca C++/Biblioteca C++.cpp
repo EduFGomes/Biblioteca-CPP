@@ -17,32 +17,40 @@ struct livro
     int numPaginas, anopublicacao, ID, qtdexemplares;
 };
 
-void cadastro(struct livro livros[], int* count)
+
+void cadastro (struct livro livros[] , int *count)
 {
     cout << "ID: " << endl;
     cin >> livros[*count].ID;
+    for (int i = 0; i <*count ; i++)
+    {
+        if (livros[i].ID == livros[*count].ID)
+        {
+            cout << "ID já cadastrado, insira outro. " << endl << "ID: " << endl;
+            cin >> livros[*count].ID;
+            i = -1;
+        }
+    }
     cin.ignore();
-    cout << "Titulo: " << endl;
-    cin.getline(livros[*count].titulo, 30);
+    cout << "Título: " << endl;
+    cin.getline (livros[*count].titulo , 30);
     cout << "Autor: " << endl;
-    cin.getline(livros[*count].autor, 30);
+    cin.getline (livros[*count].autor , 30);
     cout << "Número de páginas: " << endl;
     cin >> livros[*count].numPaginas;
     cout << "Ano de Publicação: " << endl;
     cin >> livros[*count].anopublicacao;
-    cout << "Quantidades disponiveis: " << endl;
+    cout << "Quantidades disponíveis: " << endl;
     cin >> livros[*count].qtdexemplares;
-
-
-    if (livros[*count].qtdexemplares > 10)
+    while (livros[*count].qtdexemplares > 10)
     {
         cout << "Quantidade Maxima permitida são 10 unidades. Tente de novo." << endl << "Quantidades disponiveis: " << endl;
         cin >> livros[*count].qtdexemplares;
-    }
-    (*count)++;
-}
 
-void consultatotal(struct livro livros[], int count)
+    }
+    (*count) ++;
+}
+void consultatotal (struct livro livros[] , int count )
 {
     cout << "ID: " << livros[count].ID << endl;
     cout << "Titulo: " << livros[count].titulo << endl;
@@ -53,62 +61,62 @@ void consultatotal(struct livro livros[], int count)
     cout << string(40, '-') << endl;
 }
 
-void consultaIDouTitulo(struct livro livros[], int sz)
+void consultaIDouTitulo (struct livro livros[] , int sz)
 {
     int id;
-    char tituloc[30];
+    char tituloc [30];
     int opcaoIDouTitulo = 0;
     cout << string(40, '-') << endl;
     cout << "Deseja pesquisar o livro via \n1 - ID. \n2 - Título." << endl;
     cin >> opcaoIDouTitulo;
     switch (opcaoIDouTitulo)
     {
-    case 1:
-    {
-        cout << "Digite o ID que deseja pesquisar: " << endl;
-        cin >> id;
-        bool encontrado = false;
-        for (int i = 0; i < sz; i++)
+        case 1:
         {
-            if (livros[i].ID == id)
+            cout << "Digite o ID que deseja pesquisar: " << endl;
+            cin >> id;
+            bool encontrado = false;
+            for (int i = 0; i < sz; i++)
             {
-                cout << string(40, '-') << endl;
-                consultatotal(livros, i);
-                encontrado = true;
+                if (livros[i].ID == id)
+                {
+                    cout << string(40, '-') << endl;
+                    consultatotal(livros, i);
+                    encontrado = true;
+                }
             }
-        }
-        if (!encontrado)
-        {
-            cout << "ID não encontrado." << endl;
-        }
-        break;
-    }
-    case 2:
-    {
-        cout << "Digite o titulo que deseja pesquisar: " << endl;
-        cin.ignore();
-        cin.getline(tituloc, 30);
-        bool encontrado = false;
-        for (int i = 0; i < sz; i++)
-        {
-            if (strcmp(tituloc, livros[i].titulo) == 0)
+            if (!encontrado)
             {
-                cout << string(40, '-') << endl;
-                consultatotal(livros, i);
-                encontrado = true;
+                cout << "ID não encontrado." << endl;
             }
+            break;
         }
-        if (!encontrado)
+        case 2:
         {
-            cout << "Título não encontrado." << endl;
+            cout <<"DIgite o titulo que deseja pesquisar: " << endl;
+            cin.ignore();
+            cin.getline (tituloc , 30);
+            bool encontrado = false;
+            for (int i = 0; i < sz; i++)
+            {
+                if (strcmp(tituloc, livros[i].titulo) == 0)
+                {
+                    cout << string(40, '-') << endl;
+                    consultatotal(livros, i);
+                    encontrado = true;
+                }
+            }
+            if (!encontrado)
+            {
+                cout << "Título não encontrado." << endl;
+            }
+            break;
         }
-        break;
-    }
-    default:
-        cout << "Opção inválida." << endl;
+        default:
+            cout << "Opção inválida." << endl;
     }
 }
-void menuconsultar(struct livro livros[], int count)
+void menuconsultar (struct livro livros[] , int count)
 {
     int opcaoconsulta = 0;
     cout << string(40, '-') << endl;
@@ -118,21 +126,21 @@ void menuconsultar(struct livro livros[], int count)
     cout << string(40, '-') << endl;
     switch (opcaoconsulta)
     {
-    case 1:
-    {
-        for (int i = 0; i < count; i++)
+        case 1:
         {
-            consultatotal(livros, i);
+            for (int i = 0 ; i < count ; i++)
+            {
+                consultatotal (livros, i);
+            }
+            break;
         }
-        break;
-    }
-    case 2:
-    {
-        consultaIDouTitulo(livros, count);
-        break;
-    }
-    default:
-        cout << "Opção inválida." << endl;
+        case 2:
+        {
+           consultaIDouTitulo (livros , count); 
+           break;
+        }
+        default:
+            cout << "Opção inválida." << endl;
     }
 }
 

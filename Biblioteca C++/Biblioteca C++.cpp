@@ -1,3 +1,9 @@
+/*
+    Eduarda Picolo Barboza RA - 24021934
+    Eduardo Ferreira Gomes RA - 24020599
+    Laura Akemi Suzuki     RA -  
+*/
+
 #include <iostream>
 #include <string.h>
 #include <cstring>

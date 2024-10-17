@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string.h>
 #include <cstring>
+#include <stdio.h>
 using namespace std;
 
 struct cliente
@@ -23,10 +24,11 @@ struct livro
     int numPaginas, anopublicacao, ID, qtdexemplares;
 };
 
-
 void cadastro (struct livro livros[] , int *count)
 {
-    cout << "ID: " << endl;
+    cout << string(40, '-') << endl;
+    cout << "CADASTRAR LIVRO " << endl;
+    cout << "Digite o ID: " << endl;
     cin >> livros[*count].ID;
     for (int i = 0; i <*count ; i++)
     {
@@ -48,6 +50,8 @@ void cadastro (struct livro livros[] , int *count)
     cin >> livros[*count].anopublicacao;
     cout << "Quantidades disponíveis: " << endl;
     cin >> livros[*count].qtdexemplares;
+   
+   
     while (livros[*count].qtdexemplares > 10)
     {
         cout << "Quantidade Maxima permitida são 10 unidades. Tente de novo." << endl << "Quantidades disponiveis: " << endl;
@@ -55,16 +59,19 @@ void cadastro (struct livro livros[] , int *count)
 
     }
     (*count) ++;
+    cout << string(40, '-') << endl;
+    cout << "Livro cadastrado! " << endl;
 }
+
 void consultatotal (struct livro livros[] , int count )
 {
+    cout << string(40, '-') << endl;
     cout << "ID: " << livros[count].ID << endl;
     cout << "Titulo: " << livros[count].titulo << endl;
     cout << "Autor: " << livros[count].autor << endl;
     cout << "Número de páginas: " << livros[count].numPaginas << endl;
     cout << "Ano de Publicação: " << livros[count].anopublicacao << endl;
     cout << "Quantidades disponiveis: " << livros[count].qtdexemplares << endl;
-    cout << string(40, '-') << endl;
 }
 
 void consultaIDouTitulo (struct livro livros[] , int sz)
@@ -99,7 +106,7 @@ void consultaIDouTitulo (struct livro livros[] , int sz)
         }
         case 2:
         {
-            cout <<"DIgite o titulo que deseja pesquisar: " << endl;
+            cout <<"Digite o titulo que deseja pesquisar: " << endl;
             cin.ignore();
             cin.getline (tituloc , 30);
             bool encontrado = false;
@@ -107,7 +114,6 @@ void consultaIDouTitulo (struct livro livros[] , int sz)
             {
                 if (strcmp(tituloc, livros[i].titulo) == 0)
                 {
-                    cout << string(40, '-') << endl;
                     consultatotal(livros, i);
                     encontrado = true;
                 }
@@ -122,14 +128,15 @@ void consultaIDouTitulo (struct livro livros[] , int sz)
             cout << "Opção inválida." << endl;
     }
 }
+
 void menuconsultar (struct livro livros[] , int count)
 {
     int opcaoconsulta = 0;
     cout << string(40, '-') << endl;
-    cout << "Bem Vindo(a) ao menu de consulta de livros" << endl;
+    cout << "CONSULTAR LIVRO " << endl;
     cout << "1 - listar todos os livros cadastrados. \n2 - Pesquisar um livro pelo ID ou título. \nDigite a opção desejada: " << endl;
-    cin >> opcaoconsulta;
     cout << string(40, '-') << endl;
+    cin >> opcaoconsulta;
     switch (opcaoconsulta)
     {
         case 1:
@@ -142,7 +149,7 @@ void menuconsultar (struct livro livros[] , int count)
         }
         case 2:
         {
-           consultaIDouTitulo (livros , count); 
+           consultaIDouTitulo (livros , count);
            break;
         }
         default:
@@ -150,10 +157,11 @@ void menuconsultar (struct livro livros[] , int count)
     }
 }
 
-void emprestimo(struct livro livros[], struct cliente clientes[], int count, int *ncliente) {
+void emprestimo(struct livro livros[], struct cliente clientes[], int count, int *ncliente)
+{
     int id;
     cout << string(40, '-') << endl;
-    cout << "Bem vindo(a) ao menu de empréstimos de livros" << endl;
+    cout << "EMPRESTAR LIVRO" << endl;
     cout << "Digite o ID do livro que o cliente deseja emprestar: ";
     cin >> id;
 
@@ -161,6 +169,7 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
         if (livros[i].ID == id) {
             if (livros[i].qtdexemplares == 0) {
                 cout << "Não existem mais exemplares desse livro na biblioteca." << endl;
+                return;
             }
             else {
                 int k = 0;
@@ -188,15 +197,19 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
 
                 cout << "O livro foi emprestado com sucesso!" << endl;
                 cout << "Ainda existe(m) " << livros[i].qtdexemplares << " exemplares desse livro em estoque." << endl;
+                return;
             }
         }
     }
+    cout << "ID não encontrado." << endl;
+
 }
 
-void devolucao(struct livro livros[], struct cliente clientes[], int count) {
+void devolucao(struct livro livros[], struct cliente clientes[], int count)
+{
     int id;
     cout << string(40, '-') << endl;
-    cout << "Bem vindo(a) ao menu de devolução de livros" << endl;
+    cout << "DEVOLVER LIVRO" << endl;
     cout << "Digite o ID do livro que o cliente deseja devolver: ";
     cin >> id;
 
@@ -233,13 +246,45 @@ void devolucao(struct livro livros[], struct cliente clientes[], int count) {
             }
 
             livros[i].qtdexemplares++;
+            cout << string(40, '-') << endl;
             cout << "O livro foi devolvido com sucesso!" << endl;
             cout << "Agora existem " << livros[i].qtdexemplares << " exemplares desse livro em estoque." << endl;
+            return;
         }
+    }
+    cout << "ID não encontrado." << endl;
+}
+
+void remover(struct livro livros[], int *count) {
+    bool encontrado = false;
+    int id;
+   
+    cout << string(40, '-') << endl;
+    cout << "REMOVER LIVRO " << endl;
+    cout << "Digite o ID do livro que deseja remover: " << endl;
+    cin >> id;
+
+    // Encontrando o livro com o id fornecido
+    for (int i = 0; i < *count; i++) {
+        if (livros[i].ID == id) {
+            encontrado = true;
+            cout << "Título: " << livros[i].titulo << endl;
+
+            // Deslocando os elementos
+            for (int j = i; j < (*count - 1); j++) {
+                livros[j] = livros[j + 1];  
+            }
+            (*count)--;
+            cout << "Livro " << livros[i].titulo << " removido." << endl;
+            break;  // Saindo do loop após remover
+        }
+    }
+
+    if (!encontrado) {
+        cout << "ID não encontrado." << endl;
     }
 }
 
-//criei um main só para poder testar o codigo - foi o chat que fez.
 int main()
 {
     struct livro livros[100];
@@ -251,12 +296,15 @@ int main()
 
     do
     {
-        cout << "Menu Principal:" << endl;
+        cout << string(40, '-') << endl;
+        cout << "MENU PRINCIPAL:" << endl;
         cout << "1 - Cadastrar um livro." << endl;
         cout << "2 - Consultar livros." << endl;
         cout << "3 - Emprestar um livro." << endl;
         cout << "4 - Devolver um livro." << endl;
-        cout << "5 - Sair." << endl;
+        cout << "5 - Remover livro." << endl;
+        cout << "6 - Finalizar." << endl;
+        cout << string(40, '-') << endl;
         cout << "Digite a opção desejada: ";
         cin >> opcao;
         cin.ignore(); // Ignorar o newline após a escolha da opção
@@ -276,8 +324,10 @@ int main()
             devolucao(livros, clientes, count);
             break;
         case 5:
-            cout << "Saindo do programa..." << endl;
+            remover(livros, &count);
             break;
+        case 6:
+            cout << "Saindo do programa..." << endl;
         default:
             cout << "Opção inválida. Tente novamente." << endl;
         }

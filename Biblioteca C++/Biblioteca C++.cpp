@@ -1,7 +1,7 @@
 /*
     Eduarda Picolo Barboza RA - 24021934
     Eduardo Ferreira Gomes RA - 24020599
-    Laura Akemi Suzuki     RA -  
+    Laura Akemi Suzuki     RA - 24019712
 */
 
 #include <iostream>
@@ -48,6 +48,10 @@ void cadastro (struct livro livros[] , int *count)
     cin >> livros[*count].numPaginas;
     cout << "Ano de Publicação: " << endl;
     cin >> livros[*count].anopublicacao;
+    while (livros[*count].anopublicacao > 2024) {
+        cout << "Ano inválido, digite novamente: ";
+        cin >> livros[*count].anopublicacao;
+    }
     cout << "Quantidades disponíveis: " << endl;
     cin >> livros[*count].qtdexemplares;
    
@@ -171,38 +175,35 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
                 cout << "Não existem mais exemplares desse livro na biblioteca." << endl;
                 return;
             }
-            else {
-                int k = 0;
-                for (int aux = 0; aux < 10; aux++) {
-                    if (livros[i].listaclientes[aux] != 0) {
-                        k++;
-                    }
+            int k = 0;
+            for (int aux = 0; aux < 10; aux++) {
+                if (livros[i].listaclientes[aux] != 0) {
+                    k++;
                 }
-                cout << "Digite o nome do cliente: ";
-                cin >> clientes[*ncliente].nome;
-                cout << "Digite o ID do cliente: ";
-                cin >> clientes[*ncliente].ID;
-
-                for (int aux = 0; aux < k; aux++) {
-                    if (livros[i].listaclientes[aux] == clientes[*ncliente].ID) {
-                        cout << "Esse livro já está emprestado para esse cliente." << endl;
-                        return;
-                    }
-                }
-
-                livros[i].listaclientes[k] = clientes[*ncliente].ID;
-
-                (*ncliente)++;
-                livros[i].qtdexemplares--;
-
-                cout << "O livro foi emprestado com sucesso!" << endl;
-                cout << "Ainda existe(m) " << livros[i].qtdexemplares << " exemplares desse livro em estoque." << endl;
-                return;
             }
+            cout << "Digite o nome do cliente: ";
+            cin >> clientes[*ncliente].nome;
+            cout << "Digite o ID do cliente: ";
+            cin >> clientes[*ncliente].ID;
+
+            for (int aux = 0; aux < k; aux++) {
+                if (livros[i].listaclientes[aux] == clientes[*ncliente].ID) {
+                    cout << "Esse livro já está emprestado para esse cliente." << endl;
+                    return;
+                }
+            }
+
+            livros[i].listaclientes[k] = clientes[*ncliente].ID;
+
+            (*ncliente)++;
+            livros[i].qtdexemplares--;
+
+            cout << "O livro foi emprestado com sucesso!" << endl;
+            cout << "Ainda existe(m) " << livros[i].qtdexemplares << " exemplares desse livro em estoque." << endl;
+            return;
         }
     }
     cout << "ID não encontrado." << endl;
-
 }
 
 void devolucao(struct livro livros[], struct cliente clientes[], int count)
@@ -263,6 +264,7 @@ void remover(struct livro livros[], int *count) {
     cout << "REMOVER LIVRO " << endl;
     cout << "Digite o ID do livro que deseja remover: " << endl;
     cin >> id;
+    cout << string(40, '-') << endl;
 
     // Encontrando o livro com o id fornecido
     for (int i = 0; i < *count; i++) {
@@ -307,45 +309,31 @@ int main()
         cout << string(40, '-') << endl;
         cout << "Digite a opção desejada: ";
         cin >> opcao;
-        cin.ignore(); // Ignorar o newline após a escolha da opção
+        cin.ignore();
 
         switch (opcao)
         {
         case 1:
-            cadastro(livros, &count); // Função para cadastrar um novo livro
+            cadastro(livros, &count); //Função para cadastrar um novo livro
             break;
         case 2:
-            menuconsultar(livros, count); // Função para consultar livros
+            menuconsultar(livros, count); //Função para consultar livros
             break;
         case 3:
-            emprestimo(livros, clientes, count, &ncliente);
+            emprestimo(livros, clientes, count, &ncliente); //Função para emprestar um livro
             break;
         case 4:
-            devolucao(livros, clientes, count);
+            devolucao(livros, clientes, count); //Função para devolver um livro
             break;
         case 5:
-            remover(livros, &count);
+            remover(livros, &count); //Função para remover um livro do sistema
             break;
         case 6:
             cout << "Saindo do programa..." << endl;
         default:
             cout << "Opção inválida. Tente novamente." << endl;
         }
-    } while (opcao != 5);
+    } while (opcao != 6);
 
     return 0;
 }
-
-/*Como imprimir o nome do cliente:
-int k = 0;
-    for (int aux = 0; aux < 10; aux++) {
-        if (livros[i].listaclientes[aux] != 0) {
-            k++;
-        }
-    }
-for (int f = 0; f <= k; f++) {
-    if (livros[i].listaclientes[f] == clientes[*j].ID) {
-        cout << clientes[*j].nome << endl;
-    }
-}
-*/

@@ -10,13 +10,15 @@
 #include <stdio.h>
 using namespace std;
 
+//struct que salva os dados do cliente
 struct cliente
 {
     char nome[50];
     int ID;
 };
 
-struct livro
+//struct que salva os dados do livro
+struct livro 
 {
     char titulo[30];
     char autor[30];
@@ -24,7 +26,9 @@ struct livro
     int numPaginas, anopublicacao, ID, qtdexemplares;
 };
 
-void cadastro (struct livro livros[] , int *count)
+/*Função que cadastra livros. Confere se o ID já foi utilizado.
+Confere se o ano de publicação é valido. Confere o número maxímo de exemplares.*/
+void cadastro (struct livro livros[] , int *count) 
 {
     cout << string(40, '-') << endl;
     cout << "CADASTRAR LIVRO " << endl;
@@ -58,7 +62,7 @@ void cadastro (struct livro livros[] , int *count)
    
     while (livros[*count].qtdexemplares > 10)
     {
-        cout << "Quantidade Maxima permitida são 10 unidades. Tente de novo." << endl << "Quantidades disponiveis: " << endl;
+        cout << "Quantidade Máxima permitida são 10 unidades. Tente de novo." << endl << "Quantidades disponíveis: " << endl;
         cin >> livros[*count].qtdexemplares;
 
     }
@@ -67,7 +71,8 @@ void cadastro (struct livro livros[] , int *count)
     cout << "Livro cadastrado! " << endl;
 }
 
-void consultatotal (struct livro livros[] , int count )
+//Função de pesquisa geral. Devolve todos os livros cadastrados.
+void consultatotal (struct livro livros[] , int count ) 
 {
     cout << string(40, '-') << endl;
     cout << "ID: " << livros[count].ID << endl;
@@ -78,7 +83,8 @@ void consultatotal (struct livro livros[] , int count )
     cout << "Quantidades disponiveis: " << livros[count].qtdexemplares << endl;
 }
 
-void consultaIDouTitulo (struct livro livros[] , int sz)
+// Função que permite pesquisar por ID ou título. Confere se o ID e o título existem.
+void consultaIDouTitulo (struct livro livros[] , int sz) 
 {
     int id;
     char tituloc [30];
@@ -110,7 +116,7 @@ void consultaIDouTitulo (struct livro livros[] , int sz)
         }
         case 2:
         {
-            cout <<"Digite o titulo que deseja pesquisar: " << endl;
+            cout <<"Digite o título que deseja pesquisar: " << endl;
             cin.ignore();
             cin.getline (tituloc , 30);
             bool encontrado = false;
@@ -133,7 +139,9 @@ void consultaIDouTitulo (struct livro livros[] , int sz)
     }
 }
 
-void menuconsultar (struct livro livros[] , int count)
+/*menu da pesquisa de livros. 
+Essa função leva para a função de pesquisa geral ou para a função de pesquisa por ID/Título.*/
+void menuconsultar (struct livro livros[] , int count) 
 {
     int opcaoconsulta = 0;
     cout << string(40, '-') << endl;

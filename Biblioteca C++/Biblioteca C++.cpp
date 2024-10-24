@@ -169,13 +169,16 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
     cout << "Digite o ID do livro que o cliente deseja emprestar: ";
     cin >> id;
 
+    //Esse for passa por todos os livros cadastrados.
     for (int i = 0; i < count; i++) {
         if (livros[i].ID == id) {
+            //Se não existirem mais livros a serem emprestados:
             if (livros[i].qtdexemplares == 0) {
                 cout << "Não existem mais exemplares desse livro na biblioteca." << endl;
                 return;
             }
             int k = 0;
+            //Esse for conta a quantidade de clientes que já emprestaram o livro.
             for (int aux = 0; aux < 10; aux++) {
                 if (livros[i].listaclientes[aux] != 0) {
                     k++;
@@ -187,15 +190,18 @@ void emprestimo(struct livro livros[], struct cliente clientes[], int count, int
             cin >> clientes[*ncliente].ID;
 
             for (int aux = 0; aux < k; aux++) {
+                //Se o cliente já está com esse livro emprestado:
                 if (livros[i].listaclientes[aux] == clientes[*ncliente].ID) {
                     cout << "Esse livro já está emprestado para esse cliente." << endl;
                     return;
                 }
             }
 
+            //Insere esse novo cliente na lista de empréstimos.
             livros[i].listaclientes[k] = clientes[*ncliente].ID;
 
             (*ncliente)++;
+            //Diminui 1 na quantidade de exemplares disponíveis para empréstimo.
             livros[i].qtdexemplares--;
 
             cout << "O livro foi emprestado com sucesso!" << endl;
@@ -214,9 +220,11 @@ void devolucao(struct livro livros[], struct cliente clientes[], int count)
     cout << "Digite o ID do livro que o cliente deseja devolver: ";
     cin >> id;
 
+    //Esse for passa por todos os livros cadastrados.
     for (int i = 0; i < count; i++) {
         if (livros[i].ID == id) {
             int k = 0;
+            //Esse for conta a quantidade de clientes já emprestaram esse livro.
             for (int aux = 0; aux < 10; aux++) {
                 if (livros[i].listaclientes[aux] != 0) {
                     k++;
@@ -229,10 +237,12 @@ void devolucao(struct livro livros[], struct cliente clientes[], int count)
 
             bool veri = false;
             for (int aux = 0; aux < k; aux++) {
+                //Se o ID do cliente digitado for igual a algum que emprestou o livro:
                 if (livros[i].listaclientes[aux] == idcliente) {
                     veri = true;
                 }
             }
+            //Se não for encontrado nenhum cliente com o ID digitado:
             if (veri == false) {
                 cout << "O cliente com o ID " << idcliente << " não emprestou esse livro." << endl;
                 return;
@@ -240,6 +250,7 @@ void devolucao(struct livro livros[], struct cliente clientes[], int count)
 
             for (int aux = 0; aux < k; aux++) {
                 if (livros[i].listaclientes[aux] == idcliente) {
+                    //Esse for pega o cliente da posição seguinte e coloca na posição do anterior, para tirar da lista o cliente que devolveu o livro.
                     for (int aux2 = aux; aux2 < k; aux2++){
                         livros[i].listaclientes[aux2] = livros[i].listaclientes[aux2 + 1];
                     }
